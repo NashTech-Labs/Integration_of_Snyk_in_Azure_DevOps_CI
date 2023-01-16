@@ -1,0 +1,22 @@
+# Maven
+
+  # Build your Java project and run tests with Apache Maven.
+  # Add steps that analyze code, save build artifacts, deploy, and more:
+  # https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+  trigger:
+    - master
+
+  pool: AG1-Pool #name of the agent pool
+
+  steps:
+    - script:
+        mvn clean compile test    # maven commands to run the project
+
+    - task: SnykSecurityScan@1    #snyk integration
+      inputs:
+        serviceConnectionEndpoint: 'Synk-test'
+        testType: 'app'
+        monitorWhen: 'always'
+        failOnIssues: false
+        projectName: 'scan-code-snyk
